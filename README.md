@@ -1,9 +1,16 @@
 # Recreating the Noise Orbit
-In this tutorial I'll be showing how I created this animation. You can view it, and more, on my instagram here: [@mr_praline](instagram.com/mr_praline).
+In this tutorial I'll be showing how I created this animation. 
+
+![original](images/original.gif)
+You can view it, and more, on my instagram here: [@mr_praline](instagram.com/mr_praline).
 
 ## Intro
 
-Like most of my art, this piece began as a recration of another artwork. Specifically, my friend [Zelda](https://github.com/Velfi) asked how I would recreate this great gif by [Jack Perkins]https://github.com/jackaperkins/jackaperkins/blob/master/images/noiseorbit.gif). So we hopped on a video chat to pair program.
+Like most of my art, this piece began as a recration of another artwork. Specifically, my friend [Zelda](https://github.com/Velfi) asked how I would recreate this great gif by [Jack Perkins]https://github.com/jackaperkins/jackaperkins/blob/master/images/noiseorbit.gif). 
+
+![noiseorib](images/noiseorbit.gif)
+
+So we hopped on a video chat to pair program.
 
 I'll be working in [p5.js](https://p5js.org/) for this tutorial, so anyone can follow along. My original was done with [Quil](http://quil.info), a Clojure wrapper around Processing. The drawing methods and structure are nearly identical. Also, note, most of my code snippets below should be placed inside the `draw` function. I'll leave a comprehensive working example at the end of the tutorial.
 
@@ -64,6 +71,8 @@ for (let radius = 0.1; radius < 0.4; radius += 0.05) {
 
 This is what we should see now:
 
+![1-basic-structure-1](images/1-basic-structure-1.png)
+
 Ok, that's cool, but we want to deform the circles, which we can't do right now. So instead of making each circle using `circle`, let's make them polygons, using `beginShape` and `endShape`. Check out the relevant documentation to understand what's going on: [beginShape](https://p5js.org/reference/#/p5/beginShape).
 
 ```javascript
@@ -82,6 +91,8 @@ for (let radius = 0.1; radius < 0.4; radius += 0.05) {
 ```
 
 Now what we should see is something like this:
+
+![1-basic-structure-2](images/1-basic-structure-2.png)
 
 Try playing around with some of the numbers. Increase/decrease `numSteps`. Change `radius += 0.05` to `radius += 0.01`. Pay attention to what this does to performance, though!
 
@@ -113,6 +124,8 @@ for (let radius = 0.05; radius < 0.4; radius += 0.05) {
 }
 ```
 
+![1-basic-structure-3](images/1-basic-structure-3.png)
+
 ## Distorion
 
 Now that we've made these nice concentric circles, lets start distoring them. An easy way to do this is using a Perlin noise flow field. Perlin noise is especially convinient for a few reasons:
@@ -140,6 +153,8 @@ const points = makeCircle(20, radius).map(point => {
 ```
 
 Every time you run the sketch a unique image is rendered! Here's an example:
+
+![2-distorion-1](images/2-distortion-1.png)
 
 This is good progress, but we can see in the original that the circles in the center are less distorted and circles on the outside are more distorted. So let's make a few changes. First, add a few more circles by updating the `radius += 0.05` to `0.01`, so we can tell what's going on better. Lets also change `radius < 0.4` to `0.7` so the circles fill the whole page. Last, lets scale up the noise function based on how far we are from the center.
 
@@ -188,6 +203,8 @@ const points = makeCircle(20, radius).map(point => {
 
 The output is getting even better:
 
+![2-distorion-2](images/2-distortion-2.png)
+
 Finally, lets refactor this distorion function out.
 ```javascript
 function distortPolygon(polygon) {
@@ -220,6 +237,8 @@ beginShape();
 distortedCircle.forEach(point => ...
 ```
 
+![2-distorion-3](images/2-distortion-3.png)
+
 ## Animation
 
 What we're missing now is some cool animation! So let's add that in. A real simple way, with p5.js, is to use the `frameCount` system variable. This number starts at `0` and increments every time the `draw` function is called to render a frame. Remember how above I mentioned the `noise` function (and Perlin noise in general) can be used with 3D coordinates? Lets update our usage of `noise(noiseX, noiseY)` to include `frameCount`, like so:
@@ -228,6 +247,8 @@ return noise(noiseX, noiseY, frameCount);
 ```
 
 And already things are animated! But it's far too aggressivle. Let's lower that to a nice `frameCount / 500`. This is what it should look like now:
+
+![3-animation-1](images/3-animation-1.gif)
 
 Let's do a little bit more with the animation. We can see in the original that the distorion field is moving diagonally. That can be recreated by offsetting the location of the sampled noise. Another improvement would be to make the distorion start at 0, and slowly scale up, then back down, periodically. Periodic behaviour is really easy when you have `Math.sin` and friends. So now, we should have this:
 ```javascript
@@ -246,6 +267,8 @@ const theta = noiseFn(x, y) * Math.PI * 3;
 
 const amountToNudge = 0.08 - (Math.cos(z) * 0.08);
 ```
+
+![3-animation-2](images/3-animation-2.gif)
 
 Now we have a real nice animation!
 
@@ -277,6 +300,8 @@ const smoothCircle = chaikin(distortedCircle, 4);
 beginShape();
 smoothCircle.forEach(point => {
 ```
+
+![final](images/final.gif)
 
 And voila! The sharp edges of our circles have become smooth.
 
