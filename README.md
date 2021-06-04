@@ -2,13 +2,16 @@
 In this tutorial I'll be showing how I created this animation. 
 
 ![original](images/original.gif)
+
 You can view it, and more, on my instagram here: [@mr_praline](instagram.com/mr_praline).
 
 ## Intro
 
-Like most of my art, this piece began as a recration of another artwork. Specifically, my friend [Zelda](https://github.com/Velfi) asked how I would recreate this great gif by [Jack Perkins]https://github.com/jackaperkins/jackaperkins/blob/master/images/noiseorbit.gif). So we hopped on a video chat to pair program.
+Like most of my art, this piece began as a recration of another artwork. Specifically, my friend [Zelda](https://github.com/Velfi) asked how I would recreate this great gif by [Jack Perkins](https://github.com/jackaperkins/jackaperkins/blob/master/images/noiseorbit.gif).
 
 ![noiseorib](images/noiseorbit.gif)
+
+So we hopped on a video chat to pair program.
 
 I'll be working in [p5.js](https://p5js.org/) for this tutorial, so anyone can follow along. My original was done with [Quil](http://quil.info), a Clojure wrapper around Processing. The drawing methods and structure are nearly identical. Also, note, most of my code snippets below should be placed inside the `draw` function. I'll leave a comprehensive working example at the end of the tutorial.
 
